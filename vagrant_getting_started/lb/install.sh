@@ -2,8 +2,9 @@
 
 . ../common.sh
 
-sudo apt-get install haproxy logrotate
+sudo apt-get install haproxy logrotate python-pip
 sudo dpkg -i /vagrant/nginx-latest.deb
+/usr/bin/pip freeze | grep -i beaver > /dev/null 2>&1 || sudo /usr/bin/pip install git+git://github.com/josegonzalez/beaver.git#egg=beaver
 sudo crontab -l | grep "logrotate" > /dev/null || sudo crontab /vagrant/lb/logrotate.cron
 sudo cp /vagrant/lb/logrotate.d/nginx /etc/logrotate.d/
 sudo cp /vagrant/lb/haproxy.cfg /etc/haproxy/
@@ -16,4 +17,5 @@ sudo chown -R www-data /var/www
 sudo cp /vagrant/lb/haproxy /etc/default/haproxy
 sudo /etc/init.d/nginx restart
 sudo /etc/init.d/haproxy restart
-
+diff /vagrant/lb/beaver.ini /tmp/beaver.ini || cp /vagrant/lb/beaver.ini /tmp/beaver.ini && /usr/local/bin/beaver -f /var/log/nginx/error_log.log /var/log/nginx/access_log.log -F json -P /tmp/beaver.pid -t rabbitmq -c /tmp/beaver.ini --fqdn -D
+pgrep -P `cat /tmp/beaver.pid` python > /dev/null || /usr/local/bin/beaver -f /var/log/nginx/error_log.log /var/log/nginx/access_log.log -F json -P /tmp/beaver.pid -t rabbitmq -c /tmp/beaver.ini --fqdn -D
