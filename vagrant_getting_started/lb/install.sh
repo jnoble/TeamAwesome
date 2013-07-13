@@ -2,8 +2,10 @@
 
 . ../common.sh
 
-sudo apt-get install haproxy
+sudo apt-get install haproxy logrotate
 sudo dpkg -i /vagrant/nginx-latest.deb
+sudo crontab -l | grep "logrotate" > /dev/null || sudo crontab /vagrant/lb/logrotate.cron
+sudo cp /vagrant/lb/logrotate.d/nginx /etc/logrotate.d/
 sudo cp /vagrant/lb/haproxy.cfg /etc/haproxy/
 sudo rm /etc/nginx/*
 sudo cp /vagrant/lb/nginx/* /etc/nginx/
