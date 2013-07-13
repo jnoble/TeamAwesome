@@ -6,4 +6,6 @@ sudo apt-get install php5
 sudo dpkg -i /vagrant/nginx-latest.deb
 sudo rm /etc/nginx/*
 sudo cp /vagrant/service/nginx/* /etc/nginx/
+sudo mkdir /opt/logs
+sudo mkdir /var/log/nginx
 sudo /etc/init.d/nginx restart
