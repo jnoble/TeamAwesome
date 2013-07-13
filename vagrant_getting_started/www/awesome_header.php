@@ -11,7 +11,9 @@ $(document).ready(function(){
                   transactionID = $('#transactionID').val();
                   
                   $(document).ajaxStart(function(){
-                                        $
+                                        $.ajax({
+                                               url: 'awesome_php_logger.php?parentTransaction=' + transactionID
+                                               });
                                         });
                   advancedSearchLink.click(function(e){
                                            if($('#advanced_search_content').html() == '') {
@@ -36,4 +38,4 @@ $(document).ready(function(){
 <title>Logging Test</title>
 </head>
 <body>
-<input type="hidden" id="transactionID" value="<?=$_SERVER['HTTP_X_REQUEST_ID']?>">
+<input type="hidden" id="transactionID" value="<?=isset($_SERVER['HTTP_X_REQUEST_ID'])?$_SERVER['HTTP_X_REQUEST_ID']:''?>">

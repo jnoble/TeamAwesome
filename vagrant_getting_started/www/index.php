@@ -6,6 +6,7 @@
   if (isset($_REQUEST['keyword'])) {
     $keyword = $_REQUEST['keyword'];
   }
+  
   ?>
 <h1>Team Awesome's Amazing Logomatic Machine</h1>
 <a title="run" class="run_button">RUN</a
