@@ -32,21 +32,34 @@ header('Content-Type: application/json');
 $date = date('Y.m.d', $start_date);
 $url = 'http://' . ELASTICSEARCH . ':9200/clickstream-' . $date . '/_search';
 if ($key == 'transaction_list') {
-  $query = '';
-  log_server($query_json, 'ElasticSearch');
-  $output = curl($url, json_encode($query));
+  $query = array('query'  => array('constant_score' => array('filter' => array('exists' => array('field' => 'CSNUtID')))),
+                 'sort'   => array( array('@timestamp' => array('order' => 'desc')) ),
+		 'facets' => array('facets' => array('user' => array('terms' => array('field' => 'CSNUtID')))));
+  $query_json = json_encode($query);
+  $output = curl($url, $query_json);
   $output = process_output(json_decode($output));
   echo json_encode($output);
   exit(0);
 }
+/*
+if ($key == 'transaction_items') {
+  $query = array('query' => array('term' => array('txid' => $value)),
+                 'sort'  => array( array('@timestamp' => array('order' => 'desc')) ));
+  $query_json = json_encode($query);
+  $output = curl($url, $query_json);
+  $output = process_output(json_decode($output));
+  echo json_encode($output);
+  exit(0);
+}
+*/
 
 $output = array();
-foreach ($key in array('haproxy', 'php', 'nginx_access')) {
+foreach (array('haproxy', 'php', 'nginx_access') as $key) {
   if ($type == 'haproxy') {
-    if ($key == 'user_id) {
+    if ($key == 'user_id') {
       $search = array('key' => '@fields.captured_response_cookie', 'value' => 'CSNUtID=' . $value);
     } elseif ($key == 'transaction_id') {
-      $search = array('key' => '@fields.captured_request_headers', 'value' => $value));
+      $search = array('key' => '@fields.captured_request_headers', 'value' => $value);
     } else {
       continue;
     }
@@ -71,7 +84,7 @@ echo json_encode($output);
 
 function process_output($input) {
   $output = array();
-  foreach ($row in $output) {
+  foreach ($output as $row) {
     $new_row = array();
     if (isset($row['@type'])) {
       if ($row['@type'] == 'nginx_access') {
@@ -85,6 +98,10 @@ function process_output($input) {
     }
     
     foreach ($headers[$type] as $header) {
+      $datum = $row[$header[0]];
+      if (empty($datum)) {
+        continue;
+      }
       $new_row[$header[1]] = $row[$header[0]];
     }
     $output[] = $new_row;

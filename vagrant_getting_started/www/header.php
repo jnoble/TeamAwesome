@@ -9,7 +9,7 @@ require 'log4php/layouts/LoggerLayoutGelf.php';
 define('ELASTICSEARCH', '10.26.82.142');
 define('LOAD_BALANCER', '192.168.50.4');
 define('PHP', '192.168.50.5');
-define('SERVICE', '192.168.50.6');
+define('SERVICE', '192.168.50.4:8081');
 
 // Get or set user ID cookie
 $_SESSION['CSNUtID'] = isset($_COOKIE['CSNUtID']) ? $_COOKIE['CSNUtID'] : '';
@@ -29,15 +29,21 @@ if (! $_SESSION['PARENT_REQUEST_ID']) {
 Logger::configure('log4php/config.xml');
 server_log($_SERVER['PHP_SELF']);
 
+/*
+ *
+ * FUNCTIONS
+ *
+ */
+
 function server_log($request, $type='PHP') {
   $logger = Logger::getLogger("main");
   $server_data = array('CSNUtID' => $_SESSION['CSNUtID'],
                        'HTTP_X_REQUEST_ID' => $_SESSION['HTTP_X_REQUEST_ID'],
                        'PARENT_REQUEST_ID' => $_SESSION['PARENT_REQUEST_ID'],
-                       'BROWSE_DEPTH' => $_SESSION['BROWSE_DEPTH'],
+//                       'BROWSE_DEPTH' => $_SESSION['BROWSE_DEPTH'],
                        'REQUEST' => $request,
                        'type' => $type,
-                       'TIMESTAMP' => date(DATE_ATOM));
+                       'TIMESTAMP' => date('c'));
   $logger->info(json_encode($server_data));
 }
 
