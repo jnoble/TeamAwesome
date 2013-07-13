@@ -10,7 +10,12 @@ $end_date = strtotime($_REQUEST['enddate']);
 $headers = array(
   'haproxy' => array('timestamp' => '@fields.accept_date',
   	       	     'CSNUtID'   => '@fields.captured_response_cookie',
-                     'transaction' => '@fields.captured_request_headers'
+                     'transaction' => '@fields.captured_request_headers',
+		     'request' => '@fields.http_request',
+		     'message' => '@fields.frontend_name',
+ 		     'type' => 'HAProxy'),
+  'nginx_access' => array('timestamp' => '',
+		     
 
 foreach ($key in array('haproxy', 'php', 'nginx_access')) {
   if ($type == 'haproxy') {
