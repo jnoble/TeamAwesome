@@ -4,6 +4,8 @@
 sudo apt-get install php5-fpm
 sudo apt-get install php5
 sudo apt-get install librabbitmq-dev
+sudo apt-get install php-pear
+sudo apt-get install pkg-config
 sudo dpkg -i /vagrant/nginx-latest.deb
 sudo rm /etc/nginx/*
 sudo cp /vagrant/php/nginx/* /etc/nginx/
