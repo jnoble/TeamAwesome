@@ -16,14 +16,14 @@ if ($end_date) {
 $headers = array(
   'HA Proxy' => array('@fields.accept_date' => 'timestamp',
   	       	      '@fields.captured_response_cookie' => 'CSNUtID',
-                      '@fields.captured_request_headers' => 'transaction',
+                      'txid' => 'transaction',
 		      '@fields.http_request' => 'request'),
   'Load Balancer' => array('@timestamp' => 'timestamp',
-                    	   '@fields.txid' => 'transaction',
+                    	   'txid' => 'transaction',
 		     	   '@fields.request' => 'request'),
   'PHP' => array('TIMESTAMP' => 'timestamp',
   		 'CSNUtID' => 'CSNUtID',
-                 'HTTP_X_REQUEST_ID' => 'transaction',
+                 'txid' => 'transaction',
 		 'PARENT_REQUEST_ID' => 'parent',
 		 'REQUEST' => 'request') );
 
