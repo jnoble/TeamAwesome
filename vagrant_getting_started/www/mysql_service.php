@@ -3,8 +3,8 @@
 require 'header.php';
 
 $csn_utid = $_REQUEST['CSNUtID'];
-server_log($sql, 'MySQL');
 
+server_log($sql, 'MySQL');
 //$mysqli = mysqli_connect('localhost', 'root', 'guest', 'mydata');
 //$res = mysqli_query($mysqli, $sql);
 $names = get_names();
