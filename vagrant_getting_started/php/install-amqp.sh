@@ -7,6 +7,7 @@ git submodule update
 git checkout tags/rabbitmq-c-v0.3.0
 sudo autoreconf -i
 sudo ./configure
+sudo make clean
 sudo make
 sudo make install
 sudo pecl uninstall amqp
