@@ -2,16 +2,7 @@
   include 'header.php';
   include "awesome_header.php";
   ini_set('display_errors', E_ALL);
-  
-  $keyword = '';
-  if (isset($_REQUEST['keyword'])) {
-    $keyword = $_REQUEST['keyword'];
-  }
-
-  $data_key = $_REQUEST['search_type'];
-  $num_results = $_REQUEST['num_results'];
-  $search_button = $_REQUEST['search_button'];
-  
+    
   ?>
 <h1>Team Awesome's Amazing Logomatic Machine</h1>
 
@@ -52,6 +43,7 @@ $url = 'http://' . SERVICE . '/elasticsearch_service.php';
 $query = array('key' => 'transaction_list', 'value' => '');
 $results = curl($url, json_encode($query));
 $results = json_decode($results);
+echo var_export($results, true);
 $mysql_url = 'http://' . SERVICE . '/mysql_service.php';
 foreach ($results as $row) {
     $query = array('CSNUtID' => $row['CSNUtID']);
