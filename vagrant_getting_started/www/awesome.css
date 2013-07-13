@@ -1,6 +1,8 @@
-table{
+table,th,td{
   border-spacing: 1;
   text-align: left;
+  border: 1px solid grey;
+  cell
 }
 
 th{
@@ -12,11 +14,17 @@ th{
   display: block;
   height: 100px;
   width: 300px;
-  background: #34696f;
-  border: 2px solid rgba(33, 68, 72, 0.59);
+  background: #68CBF2;
+  border: 2px solid rgba(60, C0, F0, 0.59);
+  
   color: rgba(0, 0, 0, 0.55);
   text-align: center;
   font: bold 3.2em/100px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+  
+  background: linear-gradient(top, #34696f, #2f5f63);
+  border-radius: 50px;
+  box-shadow: 0 8px 0 #1b383b;
+  text-shadow: 0 2px 2px rgba(255, 255, 255, 0.2);
 }
 
 a.run_button {
