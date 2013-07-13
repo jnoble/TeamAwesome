@@ -6,11 +6,9 @@
     <param name="login" value="guest" />
     <param name="password" value="guest" />
     <param name="exchangeName" value="php" />
-<!--
-    <param name="vhost" value="my_vhost" />
-    <param name="queueName" value="my_queue" />
+    <param name="vhost" value="/" />
+    <param name="queueName" value="php" />
     <param name="routingKey" value="some_routing_key" />
--->
     <param name="skipConnectionError" value="0" />
     <layout class="LoggerLayoutGelf" />
   </appender>
