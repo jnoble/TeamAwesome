@@ -12,7 +12,7 @@ $(document).ready(function(){
                   
                   $(document).ajaxStart(function(){
                                         $.ajax({
-                                               url: 'awesome_php_logger.php?parentTransaction=' + transactionID
+                                               url: 'header.php?PARENT_REQUEST_ID=' + transactionID
                                                });
                                         });
                   advancedSearchLink.click(function(e){
