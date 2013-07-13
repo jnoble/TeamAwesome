@@ -1,1 +1,3 @@
 https://github.com/streadway/ngx_txid -used for generating transaction id
+https://github.com/d-ulyanov/log4php-graylog2 -for sending data to amqp
+
