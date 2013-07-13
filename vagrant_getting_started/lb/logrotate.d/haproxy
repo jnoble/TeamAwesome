@@ -1,0 +1,8 @@
+/var/log/haproxy.log
+{
+	rotate 5
+	size 10k
+	missingok
+	notifempty
+	copytruncate
+}

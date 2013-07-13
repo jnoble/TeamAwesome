@@ -1,16 +1,20 @@
-#!/bin/sh -e
+#!/bin/bash
+set +e
+PIDFILE=/tmp/beaver.pid
 
-beaver_status() {
-	test -f /tmp/beaver.pid || echo "beaver not running" && return 1
-	pgrep -P $(cat /tmp/beaver.pid) python > /dev/null && echo "beaver running" && return 0
+function beaver_status() {
+	test ! -f $PIDFILE && echo "beaver not running" && return 1
+	ps aux | grep $(cat $PIDFILE) | grep python >/dev/null&& echo "beaver running" 
 }
 
-kill_beaver() {
-	beaver_status #&& pkill python -P $(cat /tmp/beaver.pid)
+function kill_beaver() {
+	echo "killing beaver"
+	beaver_status >/dev/null && kill $(cat $PIDFILE) > /dev/null 2>&1|| return 0
 }
 
-start_beaver() {
-	beaver_status || echo "starting beaver" && /usr/local/bin/beaver -f /var/log/nginx/error_log.log /var/log/nginx/access_log.log -F json -P /tmp/beaver.pid -t rabbitmq -c /tmp/beaver.ini --fqdn -D
+function start_beaver() {
+	beaver_status || echo "starting beaver" && /usr/local/bin/beaver -F json -P $PIDFILE -t rabbitmq -c /tmp/beaver.ini --fqdn -D
+	sleep 1
 }
 
 
@@ -21,16 +25,21 @@ sudo dpkg -i /vagrant/nginx-latest.deb
 /usr/bin/pip freeze | grep -i beaver > /dev/null 2>&1 || sudo /usr/bin/pip install git+git://github.com/josegonzalez/beaver.git#egg=beaver
 sudo crontab -l | grep "logrotate" > /dev/null || sudo crontab /vagrant/lb/logrotate.cron
 sudo cp /vagrant/lb/logrotate.d/nginx /etc/logrotate.d/
+sudo cp /vagrant/lb/logrotate.d/haproxy /etc/logrotate.d/
+sudo apt-get install haproxy logrotate
+sudo dpkg -i /vagrant/nginx-latest.deb
 sudo cp /vagrant/lb/haproxy.cfg /etc/haproxy/
+sudo cp /vagrant/lb/haproxy /etc/default/haproxy
 sudo rm /etc/nginx/*
 sudo cp /vagrant/lb/nginx/* /etc/nginx/
+sudo cp /vagrant/lb/rsyslog.conf /etc/rsyslog.conf
 test -d /opt/logs ||  sudo mkdir /opt/logs
 test -d /var/log/nginx || sudo mkdir /var/log/nginx
 test -d /var/www || sudo mkdir /var/www
 sudo chown -R www-data /var/www
-sudo cp /vagrant/lb/haproxy /etc/default/haproxy
 sudo /etc/init.d/nginx restart
 sudo /etc/init.d/haproxy restart
+sudo /etc/init.d/rsyslog restart
 diff /vagrant/lb/beaver.ini /tmp/beaver.ini || kill_beaver && cp /vagrant/lb/beaver.ini /tmp/beaver.ini 
-#start_beaver
+start_beaver
 
