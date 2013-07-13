@@ -12,3 +12,5 @@ test -d /var/log/nginx || sudo mkdir /var/log/nginx
 test -d /var/www || sudo mkdir /var/www
 sudo chown -R www-data /var/www
 sudo /etc/init.d/nginx restart
+diff /vagrant/service/beaver.ini /tmp/beaver.ini || kill_beaver && cp /vagrant/service/beaver.ini /tmp/beaver.ini
+start_beaver

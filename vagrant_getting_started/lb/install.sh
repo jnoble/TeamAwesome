@@ -1,28 +1,9 @@
 #!/bin/bash
-set +e
-PIDFILE=/tmp/beaver.pid
-
-function beaver_status() {
-	test ! -f $PIDFILE && echo "beaver not running" && return 1
-	ps aux | grep $(cat $PIDFILE) | grep python >/dev/null&& echo "beaver running" 
-}
-
-function kill_beaver() {
-	echo "killing beaver"
-	beaver_status >/dev/null && kill $(cat $PIDFILE) > /dev/null 2>&1|| return 0
-}
-
-function start_beaver() {
-	beaver_status || echo "starting beaver" && /usr/local/bin/beaver -F json -P $PIDFILE -t rabbitmq -c /tmp/beaver.ini --fqdn -D
-	sleep 1
-}
-
 
 . ../common.sh
 
-sudo apt-get install haproxy logrotate python-pip
+sudo apt-get install haproxy logrotate 
 sudo dpkg -i /vagrant/nginx-latest.deb
-/usr/bin/pip freeze | grep -i beaver > /dev/null 2>&1 || sudo /usr/bin/pip install git+git://github.com/josegonzalez/beaver.git#egg=beaver
 sudo crontab -l | grep "logrotate" > /dev/null || sudo crontab /vagrant/lb/logrotate.cron
 sudo cp /vagrant/lb/logrotate.d/nginx /etc/logrotate.d/
 sudo cp /vagrant/lb/logrotate.d/haproxy /etc/logrotate.d/
