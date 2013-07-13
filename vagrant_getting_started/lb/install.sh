@@ -1,16 +1,19 @@
-#!/bin/sh -e
+#!/bin/bash
+set +e
+PIDFILE=/tmp/beaver.pid
 
-beaver_status() {
-	test -f /tmp/beaver.pid || echo "beaver not running" && return 1
-	pgrep -P $(cat /tmp/beaver.pid) python > /dev/null && echo "beaver running" && return 0
+function beaver_status() {
+	test -f $PIDFILE || echo "beaver not running" && return 1
+	pgrep -P $(cat $PIDFILE) python && echo "beaver running" 
 }
 
-kill_beaver() {
-	beaver_status #&& pkill python -P $(cat /tmp/beaver.pid)
+function kill_beaver() {
+	beaver_status && pkill python -P $(cat $PIDFILE) || return 0
 }
 
-start_beaver() {
-	beaver_status || echo "starting beaver" && /usr/local/bin/beaver -f /var/log/nginx/error_log.log /var/log/nginx/access_log.log -F json -P /tmp/beaver.pid -t rabbitmq -c /tmp/beaver.ini --fqdn -D
+function start_beaver() {
+	beaver_status || echo "starting beaver" && /usr/local/bin/beaver -f /var/log/nginx/error_log.log /var/log/nginx/access_log.log -F json -P $PIDFILE -t rabbitmq -c /tmp/beaver.ini --fqdn -D
+	sleep 1
 }
 
 
@@ -32,5 +35,5 @@ sudo cp /vagrant/lb/haproxy /etc/default/haproxy
 sudo /etc/init.d/nginx restart
 sudo /etc/init.d/haproxy restart
 diff /vagrant/lb/beaver.ini /tmp/beaver.ini || kill_beaver && cp /vagrant/lb/beaver.ini /tmp/beaver.ini 
-#start_beaver
+start_beaver
 
