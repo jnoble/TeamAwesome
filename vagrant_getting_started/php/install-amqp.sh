@@ -8,5 +8,5 @@ sudo ./configure
 sudo make
 sudo make install
 sudo pecl install amqp
-sudo cp /vagrant/php/amqp.ini /etc/php5/conf.d/amqp.ini
+sudo cp /vagrant/amqp.ini /etc/php5/conf.d/amqp.ini
 sudo /etc/init.d/php5-fpm restart
