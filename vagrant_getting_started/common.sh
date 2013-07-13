@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 set +e
-sudo apt-get install vim
-sudo apt-get install git-core
-sudo apt-get install python-pip
+sudo apt-get -q -y install vim
+sudo apt-get -q -y install git-core
+sudo apt-get -q -y install python-pip
 
 /usr/bin/pip freeze | grep -i beaver > /dev/null 2>&1 || sudo /usr/bin/pip install git+git://github.com/josegonzalez/beaver.git#egg=beaver
 
