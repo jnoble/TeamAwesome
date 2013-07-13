@@ -1,3 +1,4 @@
 https://github.com/streadway/ngx_txid -used for generating transaction id
 https://github.com/d-ulyanov/log4php-graylog2 -for sending data to amqp
-
+https://github.com/logstash/logstash -for parsing/storing/filtering logs
+https://github.com/elasticsearch/elasticsearch -for storing logs
