@@ -1,4 +1,5 @@
 <?php
+  include 'header.php';
   include "awesome_header.php";
   ini_set('display_errors', E_ALL);
   
@@ -40,17 +41,30 @@ Number of results:
 <table name="results" style="float:left;width:900px;">
 <tr>
 <th>CSNUtID</th>
+<th>Name</th>
 <th>Timestamp</th>
-<th>Process</th>
-<th>Message</th>
-<th>Transation</th>
+<th>Request</th>
+<th>Transaction ID</th>
 </tr>
 <tr>
-<td>TEST</td>
-<td>TEST</td>
-<td>TEST</td>
-<td>TEST</td>
-<td>TEST</td>
+<?
+$url = 'http://' . SERVICE . '/elasticsearch_service.php';
+$query = array('key' => 'transaction_list', 'value' => '');
+$results = curl($url, json_encode($query));
+$results = json_decode($results);
+$mysql_url = 'http://' . SERVICE . '/mysql_service.php';
+foreach ($results as $row) {
+    $query = array('CSNUtID' => $row['CSNUtID']);
+    $name = curl($mysql_url, json_encode($query));
+    $name = json_decode($name);
+    echo '<td><a href="customer_list.php?CSNUtID=' . htmlentities($row['CSNUtID']) . '">'
+      . htmlentities($row['CSNUtID']) . '</a></td>';
+    echo '<td>' . htmlentities($name['First']) . ' ' . htmlentities($name['Last']) . '</td>';
+    echo '<td>' . htmlentities($row['timestamp']) . '</td>';
+    echo '<td>' . htmlentities($row['request']) . '</td>';
+    echo '<td>' . htmlentities($row['transaction']) . '</td>';
+}
+?>
 </tr>
 </table>
 <?
