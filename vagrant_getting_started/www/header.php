@@ -47,6 +47,7 @@ function curl($url, $json) {
   curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                   'X-Request-Id: ' . $_SESSION['HTTP_X_REQUEST_ID'],
   		   'Content-Type: application/json',
 		   'Content-Length: ' . strlen($json))
   );
