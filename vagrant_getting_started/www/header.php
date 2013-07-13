@@ -28,14 +28,14 @@ if (! $_SESSION['PARENT_REQUEST_ID']) {
 Logger::configure('log4php/config.xml');
 server_log($_SERVER['PHP_SELF']);
     
-function server_log($request) {
+function server_log($request, $type) {
   $logger = Logger::getLogger("main");
   $server_data = array('CSNUtID' => $_SESSION['CSNUtID'],
                        'HTTP_X_REQUEST_ID' => $_SESSION['HTTP_X_REQUEST_ID'],
                        'PARENT_REQUEST_ID' => $_SESSION['PARENT_REQUEST_ID'],
                        'BROWSE_DEPTH' => $_SESSION['BROWSE_DEPTH'],
                        'REQUEST' => $request,
-                       'type' => 'PHP',
+                       'type' => $type,
                        'TIMESTAMP' => date(DATE_ATOM));
   $logger->info(json_encode($server_data));
 }
