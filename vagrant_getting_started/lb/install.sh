@@ -17,5 +17,8 @@ sudo chown -R www-data /var/www
 sudo cp /vagrant/lb/haproxy /etc/default/haproxy
 sudo /etc/init.d/nginx restart
 sudo /etc/init.d/haproxy restart
-diff /vagrant/lb/beaver.ini /tmp/beaver.ini || cp /vagrant/lb/beaver.ini /tmp/beaver.ini && /usr/local/bin/beaver -f /var/log/nginx/error_log.log /var/log/nginx/access_log.log -F json -P /tmp/beaver.pid -t rabbitmq -c /tmp/beaver.ini --fqdn -D
-pgrep -P `cat /tmp/beaver.pid` python > /dev/null || /usr/local/bin/beaver -f /var/log/nginx/error_log.log /var/log/nginx/access_log.log -F json -P /tmp/beaver.pid -t rabbitmq -c /tmp/beaver.ini --fqdn -D
+touch /tmp/beaver.pid
+diff /vagrant/lb/beaver.ini /tmp/beaver.ini || pkill python -P $(cat /tmp/beaver.pid) && cp /vagrant/lb/beaver.ini /tmp/beaver.ini 
+test -f /tmp/beaver.pid && \
+pgrep -P $(cat /tmp/beaver.pid) python > /dev/null || /usr/local/bin/beaver -f /var/log/nginx/error_log.log /var/log/nginx/access_log.log -F json -P /tmp/beaver.pid -t rabbitmq -c /tmp/beaver.ini --fqdn -D
+

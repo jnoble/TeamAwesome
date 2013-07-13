@@ -3,7 +3,7 @@
 
 sudo apt-get install php5-fpm
 sudo apt-get install php5
-sudo apt-get install librabbitmq0
+sudo apt-get install librabbitmq-dev
 sudo dpkg -i /vagrant/nginx-latest.deb
 sudo rm /etc/nginx/*
 sudo cp /vagrant/service/nginx/* /etc/nginx/
