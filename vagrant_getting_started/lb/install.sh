@@ -19,11 +19,17 @@ function start_beaver() {
 
 . ../common.sh
 
+<<<<<<< Updated upstream
 sudo apt-get install haproxy logrotate python-pip
 sudo dpkg -i /vagrant/nginx-latest.deb
 /usr/bin/pip freeze | grep -i beaver > /dev/null 2>&1 || sudo /usr/bin/pip install git+git://github.com/josegonzalez/beaver.git#egg=beaver
 sudo crontab -l | grep "logrotate" > /dev/null || sudo crontab /vagrant/lb/logrotate.cron
 sudo cp /vagrant/lb/logrotate.d/nginx /etc/logrotate.d/
+=======
+sudo apt-get install haproxy logrotate
+sudo dpkg -i /vagrant/nginx-latest.deb
+sudo crontab -l | grep "logrotate" > /dev/null || sudo crontab /vagrant/lb/logrotate.cron
+>>>>>>> Stashed changes
 sudo cp /vagrant/lb/haproxy.cfg /etc/haproxy/
 sudo rm /etc/nginx/*
 sudo cp /vagrant/lb/nginx/* /etc/nginx/
