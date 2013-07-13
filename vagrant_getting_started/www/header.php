@@ -6,6 +6,7 @@ require 'log4php/Logger.php';
 require 'log4php/appenders/LoggerAppenderAMQP.php';
 require 'log4php/layouts/LoggerLayoutGelf.php';
 
+define('ELASTICSEARCH', '10.26.82.142');
 define('LOAD_BALANCER', '192.168.50.4');
 define('PHP', '192.168.50.5');
 define('SERVICE', '192.168.50.6');
@@ -27,8 +28,8 @@ if (! $_SESSION['PARENT_REQUEST_ID']) {
     
 Logger::configure('log4php/config.xml');
 server_log($_SERVER['PHP_SELF']);
-    
-function server_log($request, $type) {
+
+function server_log($request, $type='PHP') {
   $logger = Logger::getLogger("main");
   $server_data = array('CSNUtID' => $_SESSION['CSNUtID'],
                        'HTTP_X_REQUEST_ID' => $_SESSION['HTTP_X_REQUEST_ID'],
@@ -43,11 +44,11 @@ function server_log($request, $type) {
 function curl($url, $json) {
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $query_json);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($ch, CURLOPT_HTTPHEADER, array(
   		   'Content-Type: application/json',
-		   'Content-Length: ' . strlen($query_json))
+		   'Content-Length: ' . strlen($json))
   );
   return curl_exec($ch);
 }
