@@ -13,6 +13,21 @@ Vagrant.configure("2") do |config|
   # doesn't already exist on the user's system.
   config.vm.box_url = "http://files.vagrantup.com/precise32.box"
 
+  config.vm.define :lb do |web_config|
+    web_config.vm.box = "lb"
+    web_config.vm.network :private_network, ip: "192.168.50.4"
+  end
+
+  config.vm.define :php do |web_config|
+    web_config.vm.box = "php"
+    web_config.vm.network :private_network, ip: "192.168.50.5"
+  end
+
+  config.vm.define :service do |web_config|
+    web_config.vm.box = "service"
+    web_config.vm.network :private_network, ip: "192.168.50.6"
+  end
+
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
