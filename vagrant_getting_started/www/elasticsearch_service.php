@@ -4,18 +4,35 @@ require 'header.php';
 
 $key = $_REQUEST['key'];
 $value = $_REQUEST['value'];
-$start_date = strtotime($_REQUEST['startdate']);
-$end_date = strtotime($_REQUEST['enddate']);
+$start_date = $_REQUEST['startdate'] ?: date(DATEATOM);
+$start_date = strtotime($start_date);
+$end_date = $_REQUEST['enddate'];
+if ($end_date) {
+   $end_date = strtotime($end_date);
+} else {
+  $end_date = time() - 60 * 60;
+}
 
 $headers = array(
   'haproxy' => array('timestamp' => '@fields.accept_date',
   	       	     'CSNUtID'   => '@fields.captured_response_cookie',
                      'transaction' => '@fields.captured_request_headers',
 		     'request' => '@fields.http_request',
-		     'message' => '@fields.frontend_name',
+		     'depth' => '',
  		     'type' => 'HAProxy'),
   'nginx_access' => array('timestamp' => '',
-		     
+  		          'CSNUtID'   => '',
+                    	  'transaction' => '',
+		     	  'request' => '',
+		     	  'depth' => '',
+ 		     	  'type' => ''),
+  'PHP' => array('timestamp' => 'TIMESTAMP',
+  		 'CSNUtID'   => 'CSNUtID',
+                 'transaction' => 'HTTP_X_REQUEST_ID',
+		 'parent' => 'PARENT_REQUEST_ID',
+		 'request' => 'REQUEST',
+		 'depth' => 'BROWSE_DEPTH',
+ 		 'type' => 'type') );
 
 foreach ($key in array('haproxy', 'php', 'nginx_access')) {
   if ($type == 'haproxy') {
