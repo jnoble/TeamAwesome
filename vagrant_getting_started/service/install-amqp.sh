@@ -1,3 +1,4 @@
+sudo apt-get install build-essential pkg-config php-pear
 cd /tmp
 git clone git://github.com/alanxz/rabbitmq-c.git
 cd /tmp/rabbitmq-c
