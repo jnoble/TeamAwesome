@@ -1,8 +1,21 @@
 <configuration xmlns="http://logging.apache.org/log4php/">
-  <appender name="myAppender" class="LoggerAppenderFile">
-    <param name="file" value="/tmp/myLog.log" />
+
+  <appender name="MyAMQPAppender" class="LoggerAppenderAMQP">
+    <param name="host" value="10.26.82.142" />
+    <param name="port" value="5672" />
+    <param name="login" value="guest" />
+    <param name="password" value="guest" />
+    <param name="exchangeName" value="php" />
+<!--
+    <param name="vhost" value="my_vhost" />
+    <param name="queueName" value="my_queue" />
+    <param name="routingKey" value="some_routing_key" />
+-->
+    <param name="skipConnectionError" value="0" />
+    <layout class="LoggerLayoutGelf" />
   </appender>
+
   <root>
-    <appender_ref ref="myAppender" />
+    <appender_ref ref="MyAMQPAppender" />
   </root>
 </configuration>
