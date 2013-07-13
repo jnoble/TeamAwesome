@@ -19,6 +19,6 @@ function kill_beaver() {
 }
 
 function start_beaver() {
-        beaver_status || echo "starting beaver" && /usr/local/bin/beaver -F json -P $PIDFILE -t rabbitmq -c /tmp/beaver.ini --fqdn -D
+        beaver_status || echo "starting beaver" && /usr/local/bin/beaver -P $PIDFILE -t rabbitmq -c /tmp/beaver.ini --fqdn -D
         sleep 1
 }

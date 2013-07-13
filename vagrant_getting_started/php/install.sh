@@ -1,9 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 . ../common.sh
 
 sudo apt-get install php5-fpm
 sudo apt-get install php5
-sudo apt-get install librabbitmq-dev
 sudo apt-get install php-pear
 sudo apt-get install pkg-config
 sudo apt-get install logrotate
