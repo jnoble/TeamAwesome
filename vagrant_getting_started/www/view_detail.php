@@ -20,9 +20,9 @@
     }
   }
   if ($page_type ==  'tx_report') {
-    $term = array( "CSNUtID" => $csnutid );
+    $term = array( "CSNUtID" => $keyword );
   } else {
-    $term = array( "txid" => $txid );
+    $term = array( "txid" => $keyword );
   }
   $query = array(
                  "query" =>
@@ -85,7 +85,7 @@ Number of results:
   
   $data_array = json_decode($data, true);
   //print_r($data_array);
-  if (!empty($data_array) $data_array['status'] != 404) {
+  if (!empty($data_array) && $data_array['status'] != 404) {
     
     ?>
 <tr>
