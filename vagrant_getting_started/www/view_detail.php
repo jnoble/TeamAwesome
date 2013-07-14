@@ -1,5 +1,5 @@
 <?php
-  
+  include "header.php";
   $keyword = '';
   $data_key = '';
   $num_results = '';
