@@ -6,7 +6,7 @@ require 'log4php/Logger.php';
 require 'log4php/appenders/LoggerAppenderAMQP.php';
 require 'log4php/layouts/LoggerLayoutGelf.php';
 
-define('ELASTICSEARCH', '10.26.82.142');
+define('ELASTICSEARCH', '173.255.228.207');
 define('LOAD_BALANCER', '192.168.50.4');
 define('PHP', '192.168.50.5');
 define('SERVICE', '192.168.50.4:8081');
