@@ -1,7 +1,7 @@
 <configuration xmlns="http://logging.apache.org/log4php/">
 
   <appender name="MyAMQPAppender" class="LoggerAppenderAMQP">
-    <param name="host" value="10.26.82.142" />
+    <param name="host" value="173.255.228.207" />
     <param name="port" value="5672" />
     <param name="login" value="guest" />
     <param name="password" value="guest" />
