@@ -8,7 +8,7 @@
     <param name="exchangeName" value="php" />
     <param name="vhost" value="/" />
     <param name="queueName" value="php" />
-    <param name="routingKey" value="some_routing_key" />
+    <param name="routingKey" value="logstash" />
     <param name="skipConnectionError" value="0" />
     <layout class="LoggerLayoutGelf" />
   </appender>
