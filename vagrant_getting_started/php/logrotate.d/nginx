@@ -1,0 +1,18 @@
+/var/log/nginx/access_log.log
+{
+	rotate 5
+	size 10k
+	missingok
+	notifempty
+	copytruncate
+		
+}
+/var/log/nginx/error_log.log
+{
+	rotate 5
+	size 10k
+	missingok
+	notifempty
+	copytruncate
+		
+}
