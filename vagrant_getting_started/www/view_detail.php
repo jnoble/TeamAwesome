@@ -2,18 +2,19 @@
 
   $keyword = '';
   $data_key = '';
-  $num_results = '';
+  $num_result = '';
   $search_button = '';
   $num_result = isset($_REQUEST['num_results']) ? $_REQUEST['num_results'] : 10;
   $page_type = '';
   $search_button = isset($_REQUEST['search_button'])?$_REQUEST['search_button']:'';
   
-  if (!empty($search_button)) {
+  //if (!empty($search_button)) {
+  if (isset($_REQUEST['search_button'])) {
     
     $keyword = $_REQUEST['keyword'];
     $data_key = $_REQUEST['search_type'];
     
-    if ($data_key = 'customer') {
+    if ($data_key == 'customer') {
       $page_type = 'tx_report';
     } else {
       $page_type = 'stack_report';
@@ -26,11 +27,12 @@
   }
   $query = array(
                  "query" =>
-                 array("term" => $keyword ),
+                 array("term" => $term),
                  "sort" =>
                  array("@timestamp" => array( "order" => "desc" )),
                  "size" => $num_result);
   
+  date_default_timezone_set("UTC");
   $index = "clickstream-" . date("Y.m.d");
   $data = curl("http://" . ELASTICSEARCH . ":9200/" . $index . "/_search",
                json_encode($query));
@@ -46,7 +48,7 @@
 </select>
 
 <input type="text" name="keyword" value="<?$keyword?>" />
-<button type="submit" id="search_button" title="search">SEARCH</button>
+<button type="submit" name="search_button" id="search_button" title="search">SEARCH</button>
 <div style="float:right;vertical-align:middle">
 Number of results:
 <select name="num_results">
@@ -82,10 +84,9 @@ Number of results:
    */
   
   
-  
+  //print_r($data); 
   $data_array = json_decode($data, true);
-  //print_r($data_array);
-  if (!empty($data_array) && $data_array['status'] != 404) {
+  if (!empty($data_array)) {
     
     ?>
 <tr>
@@ -110,20 +111,24 @@ Number of results:
 <?php
   
   if ($page_type == 'tx_report') {
+    //print_r($data);
     foreach ($data_array['hits']['hits'] as $hit) {
       $hit = $hit['_source'];
+      $txid = is_array($hit['@fields']['txid']) ? $hit['@fields']['txid'][0] : $hit['@fields']['txid'];
+      $detail_url="/?search_type=transaction&keyword=" . $txid . "&search_button=&num_results=" . $num_result;
       echo "<td>" . $hit['@timestamp'] . "</td>\n";
-      echo "<td><a href='/view_detail.php?txid=" . $hit['@fields']['txid'] . "'>" . $hit['@fields']['txid'] . "</a></td>\n";
+      echo "<td><a href='" . $detail_url . "'>" . $txid . "</a></td>\n";
       echo "<tr>";
     }
   } else {
     foreach ($data_array['hits']['hits'] as $hit) {
       $hit = $hit['_source'];
+      $detail_url="/?search_type=customer&keyword=" . $hit['@fields']['CSNUtID'] . "&search_button=&num_results=" . $num_result;
       echo "<td>" . $hit['@timestamp'] . "</td>\n";
       echo "<td>" . $hit['@source'] . "</td>\n";
       echo "<td>" . $hit['@fields']['request'] . "</td>\n";
       echo "<td>" . $hit['@fields']['http_user_agent'] . "</td>\n";
-      echo "<td><a href='/view_detail.php?csnutid=" . $hit['@fields']['CSNUtID'] . "'>" . $hit['@fields']['CSNUtID'] . "</a></td>\n";
+      echo "<td><a href='" . $detail_url . "'>" . $hit['@fields']['CSNUtID'] . "</a></td>\n";
       echo "<tr>";
     }
   }
